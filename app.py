@@ -231,11 +231,15 @@ def index():
 
 @app.route("/login")
 def login():
+    import secrets
+    state = secrets.token_hex(16)
+    session["oauth_state"] = state
     params = {
         "client_id": CLIENT_ID,
         "redirect_uri": REDIRECT_URI,
         "response_type": "code",
         "scope": SCOPE,
+        "state": state,
     }
     return redirect(f"{AUTH_URL}?{urlencode(params)}")
 
